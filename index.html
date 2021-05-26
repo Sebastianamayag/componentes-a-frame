@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A frame Components</title>
+    <meta name="description" content="Hello, WebVR! • A-Frame">
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <script>
+        AFRAME.registerComponent('mi_component', {  
+            schema: {
+              interval: { type: 'number', default: 5000 },
+              defaultColor: { type: 'color', default: '#fff' }
+            },
+            init: function() {
+              let el = this.el //toma el elemento del tag
+              let interval = this.data.interval //variable de intervalo, toma lo que venga de la propiedad
+              let colors = ["red", "green", "blue", "yellow", "#feadae"] //paleta de colores en rgb, hex, obj
+              let i = 0
+              el.setAttribute('color', colors[0]) //asignación del color
+              this.colorInterval = setInterval(function(){ //cada vez que ocurra un intervalo ejecuta la funcion
+                i = (i + 1) % colors.length //ciclo para recorrer el array de colores y volver al inicio
+                el.setAttribute('color', colors[i])
+              }, interval) 
+            },
+            update: function() {},
+            remove: function() {
+              let el = this.el
+              let defaultColor = this.data.defaultColor
+              clearInterval(this.colorInterval)
+              el.setAttribute('color', defaultColor)
+            }
+          })
+    </script>
+    <a-scene>
+        <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4" shadow="" material="color: #804000" geometry="" scale="1 2 1"></a-plane>
+        <a-sky color="#C29B61" material="" geometry=""></a-sky>
+        <a-box position="-1 0.5 -1.91983" rotation="0 45 0" mi_component="defaultColor:#000: interval:100" color="violet"></a-box>
+        <a-entity camera="" position="0 1.6 5.2545" wasd-controls="" rotation="" look-controls="" aframe-injected="" data-aframe-inspector-original-camera=""></a-entity>
+    </a-scene>
+  </body>
+
+</html>
